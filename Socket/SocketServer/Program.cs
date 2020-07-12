@@ -43,7 +43,6 @@ namespace SocketServer
             }
         }
 
-
         //private static void HandleClient(object client)
         //{
         //    NetworkStream ns = null;
@@ -85,7 +84,6 @@ namespace SocketServer
         //        if(ns != null) ns.Close();
         //    }
         //}
-
 
         private static void HandleClient(object obj)
         {
@@ -166,8 +164,6 @@ namespace SocketServer
                     client.Close();
             }
         }
-
-
 
         private static bool EndsWithNewLine(List<byte> byteArray)
         {
