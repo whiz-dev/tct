@@ -43,8 +43,9 @@ namespace SocketServer
             }
         }
 
-        //private static void HandleClient(object client)
+        //private static void HandleClient(object obj)
         //{
+        //    TcpClient client = (TcpClient)obj;
         //    NetworkStream ns = null;
         //    StreamReader sr = null;
         //    StreamWriter sw = null;
@@ -79,9 +80,14 @@ namespace SocketServer
         //    }
         //    finally
         //    {
-        //        if(sw != null) sw.Close();
-        //        if(sr != null) sr.Close();
-        //        if(ns != null) ns.Close();
+        //        if (sw != null)
+        //            sw.Close();
+        //        if (sr != null)
+        //            sr.Close();
+        //        if (ns != null)
+        //            ns.Close();
+        //        if (client != null)
+        //            client.Close();
         //    }
         //}
 

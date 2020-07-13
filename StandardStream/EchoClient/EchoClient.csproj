@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{65AC08A4-654D-48F4-9A7C-47F520E315DF}</ProjectGuid>
+    <ProjectGuid>{AE3FC5A6-3BBA-4D09-AACE-DCFC826D1D74}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>File</RootNamespace>
-    <AssemblyName>File</AssemblyName>
+    <RootNamespace>EchoClient</RootNamespace>
+    <AssemblyName>EchoClient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileUtil.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
