@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SocketServer
 {
     public class Program
     {
+        static ManualResetEvent _mre = new ManualResetEvent(false);
+        static ConcurrentQueue<string> _msgQueue = new ConcurrentQueue<string>();
+
         static string _newLineString = "\n";
         static int _buffSize = 1024;
 
@@ -25,9 +30,27 @@ namespace SocketServer
 
                 while (true)
                 {
-                    string msg = Console.ReadLine();
+                    // 메시지 대기
+                    _mre.Reset();
+                    _mre.WaitOne();
 
-                    if (msg.ToUpper() == "Q")
+                    // Queue 메시지 모두 읽기
+                    string msg = null;
+                    bool isExit = false;
+
+                    while (_msgQueue.TryDequeue(out msg))
+                    {
+                        if (msg.ToUpper() == "Q")
+                        {
+                            isExit = true;
+                            break;
+                        }
+
+                        Console.Write(msg);
+                    }
+
+                    // 종료
+                    if (isExit)
                     {
                         break;
                     }
@@ -156,6 +179,9 @@ namespace SocketServer
 
                     Console.WriteLine("[HandleClient] Received");
                     Console.WriteLine(msgRecv);
+
+                    _msgQueue.Enqueue(msgRecv);
+                    _mre.Set();
 
                     if (msgRecv.ToUpper() == "Q")
                         break;
