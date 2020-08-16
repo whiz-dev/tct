@@ -10,6 +10,8 @@ namespace StandardStream
 {
     class Program
     {
+        static string _newLineString = "\n"
+            ;
         static void Main(string[] args)
         {
             using (Process proc = new Process())
@@ -37,7 +39,7 @@ namespace StandardStream
                     if (inputText.Length > 0)
                     {
                         numLines++;
-                        sw.WriteLine(inputText);
+                        sw.Write(inputText + _newLineString);
                     }
                 } while (inputText.Length > 0);
 
