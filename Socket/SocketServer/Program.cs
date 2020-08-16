@@ -11,6 +11,9 @@ namespace SocketServer
 {
     public class Program
     {
+        static string _newLineString = "\n";
+        static int _buffSize = 1024;
+
         static void Main(string[] args)
         {
             TcpListener server = null;
@@ -18,20 +21,20 @@ namespace SocketServer
             try
             {
                 server = new TcpListener(IPAddress.Parse("127.0.0.1"), 9090); //IP, Port
-                server.Start();
-                Console.WriteLine("[Server] Started");
+                Task.Factory.StartNew(new Action<object>(StartServer), server);
 
                 while (true)
                 {
-                    TcpClient client = server.AcceptTcpClient();
-                    Console.WriteLine("[Server] Client Connected");
+                    string msg = Console.ReadLine();
 
-                    Task.Factory.StartNew(new Action<object>(HandleClient), client);
+                    if (msg.ToUpper() == "Q")
+                    {
+                        break;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("[Socket] Exception");
                 Console.WriteLine(ex.Message);
             }
             finally
@@ -91,6 +94,30 @@ namespace SocketServer
         //    }
         //}
 
+        private static void StartServer(object obj)
+        {
+            TcpListener server = (TcpListener)obj;
+
+            try
+            {
+                server.Start();
+                Console.WriteLine("[Server] Started");
+
+                while (true)
+                {
+                    TcpClient client = server.AcceptTcpClient();
+                    Console.WriteLine("[Server] Client Connected");
+
+                    Task.Factory.StartNew(new Action<object>(HandleClient), client);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[Socket] Exception");
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         private static void HandleClient(object obj)
         {
             TcpClient client = (TcpClient)obj;
@@ -100,8 +127,7 @@ namespace SocketServer
             {
                 ns = client.GetStream();
 
-                int buffSize = 256;
-                byte[] buffBytes = new byte[buffSize];
+                byte[] buffBytes = new byte[_buffSize];
                 
                 while (true)
                 {
@@ -111,7 +137,7 @@ namespace SocketServer
 
                     do
                     {
-                        int readBytes = ns.Read(buffBytes, 0, buffSize);
+                        int readBytes = ns.Read(buffBytes, 0, _buffSize);
 
                         for (int i = 0; i < readBytes; i++)
                         {
@@ -126,7 +152,7 @@ namespace SocketServer
                     while (true);
 
                     msgRecv = Encoding.UTF8.GetString(msgRecvBytes.ToArray(), 0, msgRecvBytes.Count);
-                    msgRecv = msgRecv.Substring(0, msgRecv.Length - 2);
+                    msgRecv = msgRecv.Substring(0, msgRecv.Length - _newLineString.Length);
 
                     Console.WriteLine("[HandleClient] Received");
                     Console.WriteLine(msgRecv);
@@ -136,13 +162,13 @@ namespace SocketServer
 
                     // Send
                     string msgSend = msgRecv;
-                    byte[] msgSendBytes = Encoding.UTF8.GetBytes(msgSend + Environment.NewLine);
+                    byte[] msgSendBytes = Encoding.UTF8.GetBytes(msgSend + _newLineString);
 
                     int totBytes = 0;
 
                     do
                     {
-                        int writeBytes = Math.Min(buffSize, msgSendBytes.Length - totBytes);
+                        int writeBytes = Math.Min(_buffSize, msgSendBytes.Length - totBytes);
                         ns.Write(msgSendBytes, totBytes, writeBytes);
 
                         totBytes += writeBytes;
@@ -173,7 +199,7 @@ namespace SocketServer
 
         private static bool EndsWithNewLine(List<byte> byteArray)
         {
-            byte[] newLineBytes = Encoding.UTF8.GetBytes(Environment.NewLine);
+            byte[] newLineBytes = Encoding.UTF8.GetBytes(_newLineString);
 
             if (byteArray.Count < newLineBytes.Length)
             {

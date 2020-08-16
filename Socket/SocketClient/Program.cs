@@ -11,6 +11,9 @@ namespace SocketClient
 {
     class Program
     {
+        static string _newLineString = "\n";
+        static int _buffSize = 1024;
+
         //static void Main(string[] args)
         //{
         //    TcpClient client = null;
@@ -79,21 +82,19 @@ namespace SocketClient
 
                 ns = client.GetStream();
 
-                int buffSize = 256;
-                byte[] buffBytes = new byte[buffSize];
+                byte[] buffBytes = new byte[_buffSize];
                 
                 while (true)
                 {
                     // Send
-                    //string msgSend = Console.ReadLine();
-                    string msgSend = "박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 박지홍 ";
-                    byte[] msgSendBytes = Encoding.UTF8.GetBytes(msgSend + Environment.NewLine);
+                    string msgSend = Console.ReadLine();
+                    byte[] msgSendBytes = Encoding.UTF8.GetBytes(msgSend + _newLineString);
 
                     int totBytes = 0;
 
                     do
                     {
-                        int writeBytes = Math.Min(buffSize, msgSendBytes.Length - totBytes);
+                        int writeBytes = Math.Min(_buffSize, msgSendBytes.Length - totBytes);
                         ns.Write(msgSendBytes, totBytes, writeBytes);
 
                         totBytes += writeBytes;
@@ -116,7 +117,7 @@ namespace SocketClient
 
                     do
                     {
-                        int readBytes = ns.Read(buffBytes, 0, buffSize);
+                        int readBytes = ns.Read(buffBytes, 0, _buffSize);
 
                         for (int i = 0; i < readBytes; i++)
                         {
@@ -131,7 +132,7 @@ namespace SocketClient
                     while (true);
 
                     msgRecv = Encoding.UTF8.GetString(msgRecvBytes.ToArray(), 0, msgRecvBytes.Count);
-                    msgRecv = msgRecv.Substring(0, msgRecv.Length - 2);
+                    msgRecv = msgRecv.Substring(0, msgRecv.Length - _newLineString.Length);
 
                     Console.WriteLine("[Client] Received");
                     Console.WriteLine(msgRecv);
@@ -155,7 +156,7 @@ namespace SocketClient
 
         private static bool EndsWithNewLine(List<byte> byteArray)
         {
-            byte[] newLineBytes = Encoding.UTF8.GetBytes(Environment.NewLine);
+            byte[] newLineBytes = Encoding.UTF8.GetBytes(_newLineString);
 
             if (byteArray.Count < newLineBytes.Length)
             {
