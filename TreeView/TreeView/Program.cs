@@ -51,6 +51,13 @@ namespace TreeView
 
     class Entity
     {
+        string _id = null;
+        public string Id
+        {
+            get => _id;
+            set => _id = value;
+        }
+
         Entity _parent = null;
         public Entity Parent
         {
@@ -58,23 +65,15 @@ namespace TreeView
             private set => _parent = value;
         }
 
-        public Entity(string id)
-        {
-            _id = id;
-        }
-
-        string _id = null;
-
-        public string Id
-        {
-            get => _id;
-            set => _id = value;
-        }
-
         List<Entity> _children = new List<Entity>();
         public List<Entity> Children
         {
             get => _children;
+        }
+
+        public Entity(string id)
+        {
+            _id = id;
         }
 
         public void AddChild(Entity child)
