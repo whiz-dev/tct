@@ -28,17 +28,24 @@ namespace FileTest
             return lstRtn;
         }
 
-        public static void GetAllFiles(string path, List<string> rslt)
+        public static List<string> GetAllFiles(string path)
         {
+            List<string> lst = new List<string>();
+
             foreach (string f in Directory.GetFiles(path))
             {
-                rslt.Add(f);
+                lst.Add(f);
             }
 
             foreach (string d in Directory.GetDirectories(path))
             {
-                GetAllFiles(d, rslt);
+                foreach (string f in GetAllFiles(d))
+                {
+                    lst.Add(f);
+                }
             }
+
+            return lst;
         }
     }
 }

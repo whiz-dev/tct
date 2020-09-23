@@ -27,7 +27,7 @@ namespace FileTest
             //Directory
             Directory.CreateDirectory(@"SUB1\OUTFILE"); //경로에 있는 모든 디렉토리를 만들어준다. (존재하는 디렉토리는 Skip)
             string[] lst3 = Directory.GetFiles(@"SUB1", "*.*", SearchOption.AllDirectories);
-            List<string> lst4 = new List<string>(); FileUtil.GetAllFiles(@"SUB1", lst4);
+            List<string> lst4 = FileUtil.GetAllFiles(@"SUB1");
 
             //Copy, Move
             Directory.Move(@"SUB1\INFILE", @"SUB1\INFILE1"); //신규 디렉토리명 존재 시 오류
