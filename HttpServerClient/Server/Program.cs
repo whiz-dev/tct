@@ -80,7 +80,7 @@ namespace Server
             reader.Close();
             Console.WriteLine("Body : " + body);
 
-            // Do some work for 5 Secondsa
+            // Do some work for 5 Seconds
             Thread.Sleep(5000);
             byte[] data = Encoding.UTF8.GetBytes("안녕!");
 

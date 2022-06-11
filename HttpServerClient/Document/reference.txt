@@ -1,0 +1,5 @@
+#Json
+https://devstarsj.github.io/development/2016/06/11/CSharp.NewtonJSON/
+
+#HttpClient
+https://zetcode.com/csharp/httpclient/
