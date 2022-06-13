@@ -81,8 +81,10 @@ namespace Client
             // Before Thread = Main Thread
             Console.WriteLine("Before Thread : " + Thread.CurrentThread.ManagedThreadId);
 
-            JObject obj = new JObject();
-            StringContent body = new StringContent("안녕!", Encoding.UTF8);
+            JObject jobj = new JObject();
+            jobj.Add("name", "park");
+            jobj.Add("message", "안녕!");
+            StringContent body = new StringContent(jobj.ToString(), Encoding.UTF8);
 
             HttpResponseMessage res = await client.PostAsync("helloworld", body);
 
@@ -99,7 +101,11 @@ namespace Client
         /// <param name="client"></param>
         static void PostRequestAsync_ThreadBlock(HttpClient client)
         {
-            StringContent body = new StringContent("안녕!", Encoding.UTF8);
+            JObject jobj = new JObject();
+            jobj.Add("name", "park");
+            jobj.Add("message", "안녕!");
+            StringContent body = new StringContent(jobj.ToString(), Encoding.UTF8);
+
             Task<HttpResponseMessage> tsk = client.PostAsync("helloworld", body);
             tsk.Wait();
 
