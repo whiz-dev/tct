@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E08B23EC-6FF3-4834-905B-A7DEE1221416}</ProjectGuid>
+    <ProjectGuid>{75A04531-2E03-4AA3-9C63-DD9971E10AEB}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ThreadSync</RootNamespace>
-    <AssemblyName>ThreadSync</AssemblyName>
+    <RootNamespace>AutoResetEventTest</RootNamespace>
+    <AssemblyName>AutoResetEventTest</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -45,11 +45,16 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerProcess.cs" />
-    <Compile Include="SyncManagerSemaphoreSlim.cs" />
+    <Compile Include="SyncManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{1763f584-6853-4870-845b-9dcf589f6df8}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

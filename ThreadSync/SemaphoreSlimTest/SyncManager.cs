@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ThreadSync
+namespace SemaphoreSlimTest
 {
     public class SyncManager
     {
@@ -22,14 +22,19 @@ namespace ThreadSync
 
         public void SetStart(string cmd)
         {
-            // 입력된 cmd 순서대로 순차처리 필요시 lock
-            lock (_objStart)
-            {
-                _cmdSync.TryAdd(cmd, new SemaphoreSlim(1, 1));
+            _cmdSync.TryAdd(cmd, new SemaphoreSlim(1, 1));
 
-                _cmdSync[cmd].Wait();
-                _countSync.Wait();
-            }
+            _cmdSync[cmd].Wait();
+            _countSync.Wait();
+
+            // 입력된 cmd 순서대로 순차처리 필요시 lock
+            //lock (_objStart)
+            //{
+            //    _cmdSync.TryAdd(cmd, new SemaphoreSlim(1, 1));
+
+            //    _cmdSync[cmd].Wait();
+            //    _countSync.Wait();
+            //}
         }
 
         public void SetEnd(string cmd)

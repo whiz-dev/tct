@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ThreadSync
+namespace SemaphoreSlimTest
 {
     internal class Program
     {
-        static ConcurrentDictionary<string, SyncManagerSemaphoreSlim> _syncManagers = new ConcurrentDictionary<string, SyncManagerSemaphoreSlim>();
+        static ConcurrentDictionary<string, SyncManager> _syncManagers = new ConcurrentDictionary<string, SyncManager>();
 
         static void Main(string[] args)
         {
@@ -40,7 +41,7 @@ namespace ThreadSync
             ServerProcess svr = ((object[])obj)[0] as ServerProcess;
             string cmd = ((object[])obj)[1] as string;
 
-            _syncManagers.TryAdd(svr.ServerName, new SyncManagerSemaphoreSlim(3));
+            _syncManagers.TryAdd(svr.ServerName, new SyncManager(3));
             _syncManagers[svr.ServerName].SetStart(cmd);
 
             try
